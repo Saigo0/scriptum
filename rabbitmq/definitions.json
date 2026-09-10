@@ -1,0 +1,71 @@
+{
+  "users": [
+    {
+      "name": "admin",
+      "password": "admin",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "ocr.processing",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true
+    },
+    {
+      "name": "ocr.reading",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true
+    }
+  ],
+  "queues": [
+    {
+      "name": "ocr-processing",
+      "vhost": "/",
+      "durable": true,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "ocr-reading-return",
+      "vhost": "/",
+      "durable": true,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "vhost": "/",
+      "source": "ocr.processing",
+      "destination": "ocr-processing",
+      "destination_type": "queue",
+      "routing_key": "ocr.processing"
+    },
+    {
+      "vhost": "/",
+      "source": "ocr.reading",
+      "destination": "ocr-reading-return",
+      "destination_type": "queue",
+      "routing_key": "ocr.reading"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+_format_version: "3.0"
+services:
+  - name: scriptum-ocr
+    url: http://ocr:8080
+    routes:
+      - name: ocr-route
+        paths:
+          - /ocr
+        strip_path: false
+    plugins:
+      - name: key-auth
+consumers:
+  - username: scriptum-client
+    keyauth_credentials:
+      - key: scriptum-dev-key

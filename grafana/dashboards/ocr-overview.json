@@ -1,0 +1,10 @@
+{
+  "title": "Scriptum OCR",
+  "schemaVersion": 39,
+  "panels": [
+    {"type":"timeseries","title":"CPU usage","targets":[{"expr":"process_cpu_usage * 100","legendFormat":"CPU %"}]},
+    {"type":"timeseries","title":"Memory used","targets":[{"expr":"jvm_memory_used_bytes{area=\"heap\"}","legendFormat":"Heap"}]},
+    {"type":"timeseries","title":"Threads","targets":[{"expr":"jvm_threads_live_threads","legendFormat":"Live threads"}]},
+    {"type":"timeseries","title":"HTTP requests","targets":[{"expr":"sum(rate(http_server_requests_seconds_count[1m]))","legendFormat":"Requests/sec"}]}
+  ]
+}

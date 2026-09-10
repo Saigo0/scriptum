@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8e5af38d-4a29-4c47-924f-60cc07ed85cb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/DTO/request/OcrRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/DTO/response/OcrResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/resource/OcrResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/OcrService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/resources/tessdata/eng.traineddata" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/resources/tessdata/por.traineddata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;PedroWiggersDev&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Saigo0/scriptum.git&quot;,
+    &quot;accountId&quot;: &quot;05cb7eea-f3b3-4a3f-bc16-7c39170f93d1&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.3350476975579395" />
+      <entry key="MS500" value="3.173288726716762" />
+      <entry key="S2" value="8.543303049994716" />
+      <entry key="S5" value="12.524689498625975" />
+      <entry key="S10" value="14.520593294676154" />
+      <entry key="S30" value="18.95903661395158" />
+      <entry key="S60" value="31.854089145313317" />
+      <entry key="M2" value="56.936066916228576" />
+      <entry key="M5" value="149.99147525200345" />
+      <entry key="M10" value="313.35408476082097" />
+      <entry key="M15" value="451.2407205711312" />
+      <entry key="M30" value="786.2134482921754" />
+      <entry key="H1" value="1196.1759945522517" />
+      <entry key="H2" value="1550.1364534460379" />
+      <entry key="H4" value="1788.4171016790024" />
+      <entry key="D1" value="2056.9434747165487" />
+      <entry key="W1" value="2176.052428257266" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.3075800952410872" />
+      <entry key="MS500" value="3.160563583947696" />
+      <entry key="S2" value="8.53486942707439" />
+      <entry key="S5" value="12.51971590278736" />
+      <entry key="S10" value="14.517701902267167" />
+      <entry key="S30" value="18.95778194862519" />
+      <entry key="S60" value="31.853042643555106" />
+      <entry key="M2" value="56.93512756587021" />
+      <entry key="M5" value="149.99045338813522" />
+      <entry key="M10" value="313.35299278421155" />
+      <entry key="M15" value="451.23964754540515" />
+      <entry key="M30" value="786.2124321716914" />
+      <entry key="H1" value="1196.1751482155423" />
+      <entry key="H2" value="1550.1358717277596" />
+      <entry key="H4" value="1788.416755120908" />
+      <entry key="D1" value="2056.9434065088503" />
+      <entry key="W1" value="2176.0524179393597" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3IuWKIt0YCe1rtvFc0YNBp77Cco" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/pedrowiggers/IdeaProjects/scriptum",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ml.llm.kotlin.j2k.J2kLlmConfigurable"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="QuarkusRunConfiguration" factoryName="QuarkusRunConfiguration" nameIsGenerated="true">
+      <option name="profile" />
+      <option name="programParameters" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-a203e0a19954-intellij.indexing.shared.core-IU-262.10315.125" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.10315.125" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8e5af38d-4a29-4c47-924f-60cc07ed85cb" name="Changes" comment="" />
+      <created>1788614869519</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1788614869519</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
