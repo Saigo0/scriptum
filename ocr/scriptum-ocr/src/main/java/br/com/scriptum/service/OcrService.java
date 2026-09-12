@@ -2,11 +2,13 @@ package br.com.scriptum.service;
 
 import br.com.scriptum.DTO.request.OcrRequest;
 import br.com.scriptum.DTO.response.OcrResponse;
+import br.com.scriptum.service.decodificaImagem.DecodificadorImagem;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import net.sourceforge.tess4j.Word;
+import org.jboss.logging.Logger;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.OptionalDouble;
 
 @ApplicationScoped
 public class OcrService {
+
+    private static final Logger LOG = Logger.getLogger(OcrService.class);
 
     private final DecodificadorImagem decodificadorImagem;
     private Tesseract motorOcr;
@@ -37,6 +41,7 @@ public class OcrService {
      */
     @PostConstruct
     void inicializar() {
+        LOG.info("Inicializando o motor OCR Tesseract");
         try {
             Path caminhoDadosTesseract = Files.createTempDirectory("scriptum-tessdata");
             copiarRecurso("tessdata/por.traineddata", caminhoDadosTesseract);
@@ -45,7 +50,9 @@ public class OcrService {
             motorOcr = new Tesseract();
             motorOcr.setDatapath(caminhoDadosTesseract.toString());
             motorOcr.setLanguage("por+eng");
+            LOG.info("Motor OCR Tesseract inicializado com os idiomas por e eng");
         } catch (IOException exception) {
+            LOG.fatal("Falha fatal ao inicializar os dados do motor OCR Tesseract", exception);
             throw new IllegalStateException(
                     "não foi possível inicializar o OCR Tesseract", exception);
         }
@@ -58,6 +65,7 @@ public class OcrService {
      * @return resposta com os parágrafos e a confiança da leitura
      */
     public OcrResponse processar(OcrRequest requisicao) {
+        LOG.debugf("Decodificando imagem do documento %d", requisicao.documentId());
         BufferedImage imagem = decodificadorImagem.decodificar(requisicao.imageBase64());
         return processarImagem(requisicao.documentId(), requisicao.language(), imagem);
     }
@@ -79,8 +87,12 @@ public class OcrService {
             OptionalDouble confianca = motorOcr.getWords(imagem, 3).stream()
                     .mapToDouble(Word::getConfidence)
                     .average();
-            return new OcrResponse(idDocumento, paragrafos, confianca.orElse(0));
+            OcrResponse resposta = new OcrResponse(idDocumento, paragrafos, confianca.orElse(0));
+            LOG.infof("OCR concluído para o documento %d: %d parágrafo(s), confiança %.2f",
+                    idDocumento, paragrafos.size(), resposta.confidence());
+            return resposta;
         } catch (TesseractException exception) {
+            LOG.errorf(exception, "Falha ao executar OCR no documento %d", idDocumento);
             throw new IllegalStateException(
                     "não foi possível processar a imagem com o Tesseract", exception);
         }

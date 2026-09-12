@@ -1,4 +1,4 @@
-package br.com.scriptum.service;
+package br.com.scriptum.service.decodificaImagem;
 
 import java.awt.image.BufferedImage;
 

@@ -4,14 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e5af38d-4a29-4c47-924f-60cc07ed85cb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/DTO/request/OcrRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/DTO/response/OcrResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/resource/OcrResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/OcrService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/resources/tessdata/eng.traineddata" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/resources/tessdata/por.traineddata" afterDir="false" />
+    <list default="true" id="8e5af38d-4a29-4c47-924f-60cc07ed85cb" name="Changes" comment="feat: Desenvolvimento inicial do microsserviço de OCR">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grafana/dashboards/ocr-overview.json" beforeDir="false" afterPath="$PROJECT_DIR$/grafana/dashboards/ocr-overview.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/.dockerignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/resource/OcrResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/resource/OcrResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/DecodificadorImagem.java" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/decodificaImagem/DecodificadorImagem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/DecodificadorImagemBase64.java" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/decodificaImagem/DecodificadorImagemBase64.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/OcrService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/java/br/com/scriptum/service/OcrService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/scriptum-ocr/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/native-test/java/br/com/scriptum/GreetingResourceIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/DTO/request/OcrRequestTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/DTO/response/OcrResponseTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/bdd/OcrResponseCucumberTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/bdd/OcrResponseSteps.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/resource/OcrResourceIntegrationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/resource/OcrResourceUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/service/DecodificadorImagemTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/service/OcrServiceImageIntegrationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/service/OcrServiceInitializationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/service/OcrServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/java/br/com/scriptum/support/OcrTestFixtures.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/scriptum-ocr/src/test/resources/features/ocr_response.feature" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,23 +57,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.3350476975579395" />
-      <entry key="MS500" value="3.173288726716762" />
-      <entry key="S2" value="8.543303049994716" />
-      <entry key="S5" value="12.524689498625975" />
-      <entry key="S10" value="14.520593294676154" />
-      <entry key="S30" value="18.95903661395158" />
-      <entry key="S60" value="31.854089145313317" />
-      <entry key="M2" value="56.936066916228576" />
-      <entry key="M5" value="149.99147525200345" />
-      <entry key="M10" value="313.35408476082097" />
-      <entry key="M15" value="451.2407205711312" />
-      <entry key="M30" value="786.2134482921754" />
-      <entry key="H1" value="1196.1759945522517" />
-      <entry key="H2" value="1550.1364534460379" />
-      <entry key="H4" value="1788.4171016790024" />
-      <entry key="D1" value="2056.9434747165487" />
-      <entry key="W1" value="2176.052428257266" />
+      <entry key="MS100" value="1.7655389153465508" />
+      <entry key="MS500" value="4.013450666261354" />
+      <entry key="S2" value="12.810777045078702" />
+      <entry key="S5" value="23.197402804231935" />
+      <entry key="S10" value="29.715255134710993" />
+      <entry key="S30" value="43.28713941371852" />
+      <entry key="S60" value="78.03349714535871" />
+      <entry key="M2" value="146.1023142475787" />
+      <entry key="M5" value="289.71414250083524" />
+      <entry key="M10" value="462.7637204332844" />
+      <entry key="M15" value="615.3349831775588" />
+      <entry key="M30" value="1019.1380671451416" />
+      <entry key="H1" value="1603.8663739859246" />
+      <entry key="H2" value="2204.7447878669536" />
+      <entry key="H4" value="2660.036250830893" />
+      <entry key="D1" value="3187.202543918613" />
+      <entry key="W1" value="3360.4171749045145" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -77,23 +95,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.3075800952410872" />
-      <entry key="MS500" value="3.160563583947696" />
-      <entry key="S2" value="8.53486942707439" />
-      <entry key="S5" value="12.51971590278736" />
-      <entry key="S10" value="14.517701902267167" />
-      <entry key="S30" value="18.95778194862519" />
-      <entry key="S60" value="31.853042643555106" />
-      <entry key="M2" value="56.93512756587021" />
-      <entry key="M5" value="149.99045338813522" />
-      <entry key="M10" value="313.35299278421155" />
-      <entry key="M15" value="451.23964754540515" />
-      <entry key="M30" value="786.2124321716914" />
-      <entry key="H1" value="1196.1751482155423" />
-      <entry key="H2" value="1550.1358717277596" />
-      <entry key="H4" value="1788.416755120908" />
-      <entry key="D1" value="2056.9434065088503" />
-      <entry key="W1" value="2176.0524179393597" />
+      <entry key="MS100" value="1.7181033276875972" />
+      <entry key="MS500" value="3.994612939794884" />
+      <entry key="S2" value="12.796177841186616" />
+      <entry key="S5" value="23.186512824987442" />
+      <entry key="S10" value="29.708183177054334" />
+      <entry key="S30" value="43.28372432607274" />
+      <entry key="S60" value="78.03048139276315" />
+      <entry key="M2" value="146.0993328523018" />
+      <entry key="M5" value="289.71057239910425" />
+      <entry key="M10" value="462.7600527127297" />
+      <entry key="M15" value="615.3315466818581" />
+      <entry key="M30" value="1019.1352816870993" />
+      <entry key="H1" value="1603.8643360161557" />
+      <entry key="H2" value="2204.743458293639" />
+      <entry key="H4" value="2660.0354702529626" />
+      <entry key="D1" value="3187.2023918981085" />
+      <entry key="W1" value="3360.417152276287" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -105,25 +123,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/pedrowiggers/IdeaProjects/scriptum",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ml.llm.kotlin.j2k.J2kLlmConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/pedrowiggers/IdeaProjects/scriptum&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.kotlin.j2k.J2kLlmConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Unnamed" type="QuarkusRunConfiguration" factoryName="QuarkusRunConfiguration" nameIsGenerated="true">
       <option name="profile" />
@@ -151,6 +169,10 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: Desenvolvimento inicial do microsserviço de OCR" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Desenvolvimento inicial do microsserviço de OCR" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

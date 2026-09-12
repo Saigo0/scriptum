@@ -1,89 +1,251 @@
-# scriptum-ocr
+# 🔎 Scriptum OCR
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Serviço de reconhecimento óptico de caracteres (OCR) desenvolvido com
+**Quarkus**, **Tesseract** e **RabbitMQ**.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+O serviço pode receber imagens por HTTP ou processá-las de forma assíncrona
+por uma fila.
 
-## Running the application in dev mode
+## 📋 Pré-requisitos
 
-You can run your application in dev mode that enables live coding using:
+- Java 21
+- Docker e Docker Compose, somente para executar o ambiente completo
+- RabbitMQ, somente para testar a integração real com a fila
 
-```shell script
+O projeto possui Gradle Wrapper, portanto não é necessário instalar o Gradle:
+
+```bash
+./gradlew --version
+```
+
+## 🚀 Executar em modo desenvolvimento
+
+O modo desenvolvimento habilita recarregamento automático:
+
+```bash
 ./gradlew quarkusDev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+Endpoints úteis:
 
-## Packaging and running the application
+- API OCR: <http://localhost:8080/ocr>
+- Swagger UI: <http://localhost:8080/q/swagger-ui>
+- Métricas Prometheus: <http://localhost:8080/q/metrics>
+- Quarkus Dev UI: <http://localhost:8080/q/dev>
 
-The application can be packaged using:
+## 📦 Compilar e executar
 
-```shell script
+Gerar o pacote Quarkus:
+
+```bash
 ./gradlew build
 ```
 
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+Executar o artefato gerado:
 
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
+```bash
+java -jar build/quarkus-app/quarkus-run.jar
+```
 
-If you want to build an _über-jar_, execute the following command:
+Gerar um JAR único:
 
-```shell script
+```bash
 ./gradlew build -Dquarkus.package.jar.type=uber-jar
+java -jar build/*-runner.jar
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
+## 🌐 API REST
 
-## Creating a native executable
+### `POST /ocr`
 
-You can create a native executable using:
+Processa uma imagem codificada em Base64.
 
-```shell script
-./gradlew build -Dquarkus.native.enabled=true
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./gradlew build -Dquarkus.native.enabled=true -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./build/scriptum-ocr-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
-
-## Provided Code
-
-### REST
-
-`POST /ocr` receives JSON with the document identifier, language (`por` or
-`eng`) and the image encoded as Base64:
+Exemplo de requisição:
 
 ```json
 {
   "documentId": 123,
   "language": "por",
-  "imageBase64": "..."
+  "imageBase64": "BASE64_DA_IMAGEM"
 }
 ```
 
-The response contains the document identifier, one entry per paragraph and
-the OCR confidence percentage:
+Idiomas disponíveis:
+
+- `por` — português
+- `eng` — inglês
+
+Exemplo com `curl`:
+
+```bash
+curl -X POST http://localhost:8080/ocr \
+  -H 'Content-Type: application/json' \
+  -d '{"documentId":123,"language":"por","imageBase64":"BASE64_DA_IMAGEM"}'
+```
+
+Resposta esperada:
 
 ```json
 {
   "documentId": 123,
-  "paragraphs": ["First paragraph", "Second paragraph"],
+  "paragraphs": ["Primeiro parágrafo", "Segundo parágrafo"],
   "confidence": 93.4
 }
 ```
 
-RabbitMQ exposes `ocr-processing` and `ocr-reading-return` queues. The
-processed response remains available in `ocr-reading-return` until it is
-acknowledged by a consumer. It can be inspected in the RabbitMQ Management
-UI under **Queues and Streams**. The application metrics are available at `/q/metrics`; the root
-`docker-compose.yml` also starts Prometheus, Grafana and Kong. When using
-Kong, send `apikey: scriptum-dev-key` with the OCR request.
+## 📨 Filas RabbitMQ
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+O serviço utiliza os seguintes canais:
+
+| Canal | Finalidade |
+|---|---|
+| `ocr-processing` | Recebe solicitações de OCR |
+| `ocr-reading-return` | Publica as respostas processadas |
+
+As mensagens devem conter o mesmo JSON utilizado pela API REST.
+
+### 🧪 Testar a fila sem RabbitMQ
+
+O teste de integração utiliza o conector em memória:
+
+```bash
+./gradlew integrationTest --rerun-tasks
+```
+
+Esse teste valida o fluxo completo de entrada, processamento com Tesseract e
+publicação da resposta.
+
+### 🐇 Testar com RabbitMQ real
+
+Na raiz do repositório, inicie RabbitMQ e o serviço OCR:
+
+```bash
+cd ../..
+docker compose up -d rabbitmq ocr
+```
+
+Publique uma mensagem na fila de processamento:
+
+```bash
+curl -u admin:admin \
+  -H 'content-type: application/json' \
+  -X POST 'http://localhost:15672/api/exchanges/%2F/ocr.processing/publish' \
+  --data-binary @- <<'JSON'
+{
+  "properties": {
+    "content_type": "application/json"
+  },
+  "routing_key": "ocr.processing",
+  "payload": "{\"documentId\":2026,\"language\":\"eng\",\"imageBase64\":\"BASE64_DA_IMAGEM\"}",
+  "payload_encoding": "string"
+}
+JSON
+```
+
+Consulte a resposta publicada:
+
+```bash
+curl -u admin:admin \
+  -H 'content-type: application/json' \
+  'http://localhost:15672/api/queues/%2F/ocr-reading-return/get' \
+  --data-binary @- <<'JSON'
+{
+  "count": 1,
+  "ackmode": "ack_requeue_true",
+  "encoding": "auto",
+  "truncate": 50000
+}
+JSON
+```
+
+Painel do RabbitMQ: <http://localhost:15672>
+
+- Usuário: `admin`
+- Senha: `admin`
+
+## 🧪 Testes
+
+Executar todos os testes:
+
+```bash
+./gradlew test --rerun-tasks
+```
+
+Executar somente os testes unitários:
+
+```bash
+./gradlew unitTest --rerun-tasks
+```
+
+Executar somente os testes de integração:
+
+```bash
+./gradlew integrationTest --rerun-tasks
+```
+
+Os testes exibem:
+
+- `[UNITÁRIO]` ou `[INTEGRAÇÃO]` ao iniciar
+- `STARTED`, `PASSED`, `FAILED` ou `SKIPPED`
+- Total de testes aprovados, falhos e ignorados
+
+Relatórios HTML:
+
+```text
+build/reports/tests/test/index.html
+build/reports/tests/unitTest/index.html
+build/reports/tests/integrationTest/index.html
+```
+
+## 🐳 Executar com Docker Compose
+
+Para iniciar o ambiente completo — OCR, RabbitMQ, Prometheus, Grafana e Kong:
+
+```bash
+cd ../..
+cp .env.example .env
+docker compose -f docker-compose.yml up --build
+```
+
+Por padrão, somente o gateway do Kong fica acessível no host. Para publicar
+também as portas dos microsserviços, use o segundo arquivo:
+
+```bash
+docker compose -f docker-compose.external.yml up --build
+```
+
+O gateway do Kong fica sempre disponível em <http://localhost:8000>. A porta
+administrativa do Kong (8001) permanece restrita ao host.
+
+## 📊 Observabilidade
+
+Os logs do serviço exibem horário e nível com cores no console, sem mostrar a
+thread de execução. Mensagens de erro e validação são registradas em
+português, sem expor o conteúdo Base64 das imagens.
+
+## ⚙️ Configuração
+
+As variáveis padrão de ambiente para RabbitMQ são:
+
+| Variável | Padrão |
+|---|---|
+| `RABBITMQ_HOST` | `localhost` |
+| `RABBITMQ_PORT` | `5672` |
+| `RABBITMQ_USERNAME` | `admin` |
+| `RABBITMQ_PASSWORD` | `admin` |
+
+## 🧬 Build nativo
+
+Com GraalVM configurado:
+
+```bash
+./gradlew build -Dquarkus.native.enabled=true
+```
+
+Usando build nativo em container:
+
+```bash
+./gradlew build \
+  -Dquarkus.native.enabled=true \
+  -Dquarkus.native.container-build=true
+```

@@ -1,5 +1,25 @@
+# Gradle and generated artifacts
 .gradle/
-.idea/
 build/
+
+# IDE and editor files
+.idea/
+.vscode/
 *.iml
+*.ipr
+*.iws
 *.log
+*.swp
+*.swo
+
+# Repository and local-only files
+.git/
+.gitignore
+.env
+.env.*
+*.orig
+*.rej
+
+# Operating system files
+.DS_Store
+Thumbs.db

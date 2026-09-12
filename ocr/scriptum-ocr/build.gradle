@@ -8,6 +8,48 @@ repositories {
     mavenCentral()
     mavenLocal()
 }
+test {
+    useJUnitPlatform()
+}
+
+tasks.register('unitTest', Test) {
+    description = 'Executa somente os testes unitários.'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'unit'
+    }
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Executa somente os testes de integração.'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'integration'
+    }
+}
+
+tasks.withType(Test).configureEach {
+    testLogging {
+        events 'started', 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        showStandardStreams = true
+    }
+    afterSuite { descriptor, result ->
+        if (!descriptor.parent) {
+            println("\nTestes: ${result.testCount} | "
+                    + "passaram: ${result.successfulTestCount} | "
+                    + "falharam: ${result.failedTestCount} | "
+                    + "ignorados: ${result.skippedTestCount}")
+        }
+    }
+}
 
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")

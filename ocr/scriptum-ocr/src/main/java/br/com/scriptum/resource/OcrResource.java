@@ -18,11 +18,14 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.jboss.logging.Logger;
 
 @Path("/ocr")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class OcrResource {
+
+    private static final Logger LOG = Logger.getLogger(OcrResource.class);
 
     @Inject
     OcrService ocrService;
@@ -42,11 +45,17 @@ public class OcrResource {
      */
     @POST
     public Response processar(@Valid OcrRequest requisicao) {
+        LOG.infof("Iniciando processamento OCR do documento %d no idioma %s",
+                requisicao.documentId(), requisicao.language());
         try {
             OcrResponse resposta = ocrService.processar(requisicao);
             enviar(returnEmitter, resposta);
+            LOG.infof("Processamento OCR concluído para o documento %d: %d parágrafo(s), confiança %.2f",
+                    resposta.documentId(), resposta.paragraphs().size(), resposta.confidence());
             return Response.ok(resposta).build();
         } catch (IllegalArgumentException exception) {
+            LOG.warnf("Solicitação OCR inválida para o documento %d: %s",
+                    requisicao.documentId(), exception.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(exception.getMessage())
                     .build();
@@ -61,10 +70,15 @@ public class OcrResource {
     @Incoming("ocr-processing")
     @Blocking
     public void processarDaFila(JsonObject carga) {
+        LOG.info("Mensagem recebida na fila ocr-processing");
         try {
             OcrRequest requisicao = objectMapper.readValue(carga.encode(), OcrRequest.class);
-            enviar(returnEmitter, ocrService.processar(requisicao));
+            OcrResponse resposta = ocrService.processar(requisicao);
+            enviar(returnEmitter, resposta);
+            LOG.infof("Mensagem da fila processada para o documento %d",
+                    resposta.documentId());
         } catch (JsonProcessingException exception) {
+            LOG.warn("Mensagem inválida recebida na fila ocr-processing", exception);
             throw new IllegalArgumentException("mensagem inválida na fila de OCR", exception);
         }
     }
@@ -79,6 +93,7 @@ public class OcrResource {
         try {
             emissor.send(objectMapper.writeValueAsString(carga));
         } catch (JsonProcessingException exception) {
+            LOG.error("Não foi possível serializar a resposta OCR", exception);
             throw new IllegalStateException(
                     "não foi possível serializar a mensagem de OCR", exception);
         }
