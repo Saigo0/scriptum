@@ -9,6 +9,17 @@ services:
         strip_path: false
     plugins:
       - name: key-auth
+
+  - name: scriptum-note-manager
+    url: http://note-manager:8081
+    routes:
+      - name: notes-route
+        paths:
+          - /notes
+        strip_path: false
+    plugins:
+      - name: key-auth
+
 consumers:
   - username: scriptum-client
     keyauth_credentials:
