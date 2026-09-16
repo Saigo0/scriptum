@@ -13,9 +13,13 @@ services:
   - name: scriptum-note-manager
     url: http://note-manager:8081
     routes:
-      - name: notes-route
+      - name: documentos-route
         paths:
-          - /notes
+          - /documentos
+        strip_path: false
+      - name: grupos-route
+        paths:
+          - /grupos
         strip_path: false
     plugins:
       - name: key-auth
