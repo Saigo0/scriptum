@@ -10,6 +10,8 @@ RUN sed -i 's/\r$//' mvnw
 
 RUN echo "distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.8/apache-maven-3.8.8-bin.zip" > .mvn/wrapper/maven-wrapper.properties
 
+RUN chmod +x mvnw
+
 RUN ./mvnw dependency:go-offline
 
 COPY src src
