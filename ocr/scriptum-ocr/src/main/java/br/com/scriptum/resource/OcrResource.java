@@ -76,11 +76,13 @@ public class OcrResource {
             OcrRequest requisicao = objectMapper.readValue(carga.encode(), OcrRequest.class);
             OcrResponse resposta = ocrService.processar(requisicao);
             enviar(returnEmitter, resposta);
-            LOG.infof("Mensagem da fila processada para o documento %d",
-                    resposta.documentId());
+            LOG.infof("Mensagem da fila processada para o documento %d", resposta.documentId());
         } catch (JsonProcessingException exception) {
             LOG.warn("Mensagem inválida recebida na fila ocr-processing", exception);
             throw new IllegalArgumentException("mensagem inválida na fila de OCR", exception);
+        } catch (Throwable t) {
+            LOG.error("ERRO FATAL E INVISÍVEL NO OCR:", t);
+            throw new RuntimeException(t);
         }
     }
 

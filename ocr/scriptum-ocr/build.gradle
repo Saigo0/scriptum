@@ -61,7 +61,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-messaging-rabbitmq'
     implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
 
-    implementation 'net.sourceforge.tess4j:tess4j:5.19.0'
+    implementation 'net.sourceforge.tess4j:tess4j:5.7.0'
 
     testImplementation 'io.quarkus:quarkus-junit'
     testImplementation 'io.rest-assured:rest-assured'

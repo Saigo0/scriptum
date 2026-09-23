@@ -13,16 +13,17 @@ RUN ./gradlew --no-daemon dependencies
 COPY src src
 RUN ./gradlew --no-daemon clean build -x test
 
-FROM eclipse-temurin:21-jre-jammy AS runtime
+FROM eclipse-temurin:21-jre-noble AS runtime
 
 ENV JAVA_TOOL_OPTIONS="-XX:InitialRAMPercentage=25.0 -XX:MaxRAMPercentage=75.0"
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-        liblept5 \
-        libtesseract4 \
+        libleptonica-dev \
+        libtesseract-dev \
         tesseract-ocr \
         tesseract-ocr-por \
+        tesseract-ocr-eng \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --system --create-home --uid 10001 scriptum
 
