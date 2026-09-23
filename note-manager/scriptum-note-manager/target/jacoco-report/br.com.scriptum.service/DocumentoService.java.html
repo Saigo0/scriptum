@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DocumentoService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServicoDiretoTest (QuarkusTest)</a> &gt; <a href="index.source.html" class="el_package">br.com.scriptum.service</a> &gt; <span class="el_source">DocumentoService.java</span></div><h1>DocumentoService.java</h1><pre class="source lang-java linenums">package br.com.scriptum.service;
+
+import br.com.scriptum.dto.OcrRequest;
+import br.com.scriptum.model.Documento;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+@ApplicationScoped
+<span class="nc" id="L15">public class DocumentoService {</span>
+
+    @Inject
+    @Channel(&quot;ocr-processing&quot;)
+    Emitter&lt;OcrRequest&gt; ocrEmitter;
+
+    private void validarTamanho(List&lt;String&gt; paragrafos) {
+<span class="nc bnc" id="L22" title="All 4 branches missed.">        if (paragrafos == null || paragrafos.isEmpty()) return;</span>
+        
+<span class="nc" id="L24">        long tamanhoEmBytes = paragrafos.stream()</span>
+<span class="nc" id="L25">                .mapToLong(p -&gt; p.getBytes(StandardCharsets.UTF_8).length)</span>
+<span class="nc" id="L26">                .sum();</span>
+                
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (tamanhoEmBytes &gt; 2 * 1024 * 1024) {</span>
+<span class="nc" id="L29">            throw new IllegalArgumentException(&quot;O texto do documento excede o limite de 2MB.&quot;);</span>
+        }
+<span class="nc" id="L31">    }</span>
+
+    @Transactional
+    public Documento criarDocumentoManual(String titulo, List&lt;String&gt; paragrafos) {
+<span class="nc" id="L35">        validarTamanho(paragrafos);</span>
+
+<span class="nc" id="L37">        Documento doc = new Documento();</span>
+<span class="nc" id="L38">        doc.titulo = titulo;</span>
+<span class="nc" id="L39">        doc.conteudo = paragrafos;</span>
+<span class="nc" id="L40">        doc.status = &quot;DIGITADO_MANUALMENTE&quot;;</span>
+<span class="nc" id="L41">        doc.persist();</span>
+        
+<span class="nc" id="L43">        return doc;</span>
+    }
+
+    @Transactional
+    public Documento criarDocumentoEscaneado(String titulo, String language, String imageBase64) {
+<span class="nc" id="L48">        Documento doc = new Documento();</span>
+<span class="nc" id="L49">        doc.titulo = titulo;</span>
+<span class="nc" id="L50">        doc.status = &quot;EM_ESCANEAMENTO&quot;;</span>
+<span class="nc" id="L51">        doc.persistAndFlush();</span>
+        
+<span class="nc" id="L53">        OcrRequest ocrRequest = new OcrRequest(doc.id, language, imageBase64);</span>
+<span class="nc" id="L54">        ocrEmitter.send(ocrRequest);</span>
+        
+<span class="nc" id="L56">        return doc;</span>
+    }
+
+    @Transactional
+    public void processarRetornoOcr(Long id, List&lt;String&gt; paragrafos, Double confiabilidade) {
+<span class="nc" id="L61">        Documento doc = Documento.findById(id);</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (doc != null) {</span>
+            try {
+<span class="nc" id="L64">                validarTamanho(paragrafos);</span>
+<span class="nc" id="L65">                doc.conteudo = paragrafos;</span>
+<span class="nc" id="L66">                doc.confiabilidade = confiabilidade;</span>
+<span class="nc" id="L67">                doc.status = &quot;ESCANEADO&quot;;</span>
+<span class="nc" id="L68">            } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L69">                doc.status = &quot;ERRO_LIMITE_TAMANHO&quot;;</span>
+            }
+        }
+<span class="nc" id="L72">    }</span>
+
+    @Transactional
+    public Documento editarDocumento(Long id, List&lt;String&gt; novosParagrafos) {
+<span class="nc" id="L76">        Documento doc = Documento.findById(id);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (doc != null) {</span>
+<span class="nc" id="L78">            validarTamanho(novosParagrafos);</span>
+<span class="nc" id="L79">            doc.conteudo = novosParagrafos;</span>
+<span class="nc" id="L80">            doc.status = &quot;DIGITADO_MANUALMENTE&quot;;</span>
+        }
+<span class="nc" id="L82">        return doc;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

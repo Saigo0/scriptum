@@ -43,6 +43,10 @@ public class DocumentoService {
         return doc;
     }
 
+    public Documento buscarPorId(Long id) {
+        return Documento.findById(id);
+    }
+
     @Transactional
     public Documento criarDocumentoEscaneado(String titulo, String language, String imageBase64) {
         Documento doc = new Documento();

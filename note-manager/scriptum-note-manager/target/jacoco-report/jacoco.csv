@@ -1,0 +1,14 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.dto,NoteRequest,6,0,0,0,2,0,1,0,1,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.dto,OcrRequest,12,0,0,0,5,0,1,0,1,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.dto,OcrResponse,3,0,0,0,1,0,1,0,1,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.model,Grupo,8,0,0,0,2,0,1,0,1,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.model,Documento,11,0,0,0,4,0,1,0,1,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.service,DocumentoService,119,0,10,0,37,0,12,0,7,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.service,GrupoService,27,0,4,0,8,0,5,0,3,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.messaging,OcrResponseConsumer,37,0,0,0,12,0,3,0,3,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.resource,DocumentoResource,65,0,2,0,13,0,5,0,4,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.resource,GrupoResource.GrupoRequest,3,0,0,0,1,0,1,0,1,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.resource,DocumentoResource.DocumentoEscaneadoRequest,3,0,0,0,1,0,1,0,1,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.resource,GrupoResource,29,0,0,0,6,0,3,0,3,0
+ServicoDiretoTest (QuarkusTest),br.com.scriptum.resource,DocumentoResource.DocumentoManualRequest,3,0,0,0,1,0,1,0,1,0

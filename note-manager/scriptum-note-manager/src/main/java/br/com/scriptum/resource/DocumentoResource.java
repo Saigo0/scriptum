@@ -27,6 +27,20 @@ public class DocumentoResource {
         public String imageBase64;
     }
 
+    @GET
+    @Path("/{id}")
+    public Response buscarDocumento(@PathParam("id") Long id) {
+        Documento doc = documentoService.buscarPorId(id);
+        
+        if (doc == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                           .entity("Documento não encontrado para o ID: " + id)
+                           .build();
+        }
+        
+        return Response.ok(doc).build();
+    }
+
     @POST
     @Path("/manual")
     public Response criarManual(DocumentoManualRequest request) {
