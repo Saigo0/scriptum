@@ -9,9 +9,7 @@ repositories {
     mavenLocal()
 }
 test {
-    useJUnitPlatform {
-        excludeTags 'integration'
-    }
+    useJUnitPlatform()
 }
 
 tasks.register('unitTest', Test) {

@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalDouble;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 public class OcrService {
@@ -43,6 +44,7 @@ public class OcrService {
     void inicializar() {
         LOG.info("Inicializando o motor OCR Tesseract");
         try {
+            configurarCaminhoBibliotecasNativas();
             Path caminhoDadosTesseract = Files.createTempDirectory("scriptum-tessdata");
             copiarRecurso("tessdata/por.traineddata", caminhoDadosTesseract);
             copiarRecurso("tessdata/eng.traineddata", caminhoDadosTesseract);
@@ -55,6 +57,33 @@ public class OcrService {
             LOG.fatal("Falha fatal ao inicializar os dados do motor OCR Tesseract", exception);
             throw new IllegalStateException(
                     "não foi possível inicializar o OCR Tesseract", exception);
+        }
+    }
+
+    /**
+     * Inclui diretórios comuns de instalação do Tesseract no caminho pesquisado
+     * pelo JNA. Isso é necessário no macOS, onde o Homebrew não instala as
+     * bibliotecas em um diretório pesquisado por padrão pela JVM.
+     */
+    private void configurarCaminhoBibliotecasNativas() {
+        String caminhoAtual = System.getProperty("jna.library.path", "");
+        String[] caminhosPadrao = {
+                "/opt/homebrew/lib",
+                "/usr/local/lib"
+        };
+
+        String caminhoNativo = Stream.concat(
+                        Stream.of(caminhoAtual.split(java.io.File.pathSeparator))
+                                .filter(caminho -> !caminho.isBlank()),
+                        Arrays.stream(caminhosPadrao))
+                .filter(caminho -> Files.isDirectory(Path.of(caminho)))
+                .distinct()
+                .reduce((esquerda, direita) ->
+                        esquerda + java.io.File.pathSeparator + direita)
+                .orElse("");
+
+        if (!caminhoNativo.isBlank()) {
+            System.setProperty("jna.library.path", caminhoNativo);
         }
     }
 
