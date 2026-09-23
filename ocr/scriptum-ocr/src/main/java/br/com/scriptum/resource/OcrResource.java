@@ -70,6 +70,7 @@ public class OcrResource {
     @Incoming("ocr-processing")
     @Blocking
     public void processarDaFila(JsonObject carga) {
+        LOG.info(carga.encode());
         LOG.info("Mensagem recebida na fila ocr-processing");
         try {
             OcrRequest requisicao = objectMapper.readValue(carga.encode(), OcrRequest.class);

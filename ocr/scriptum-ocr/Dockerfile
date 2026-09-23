@@ -7,7 +7,7 @@ WORKDIR /workspace
 COPY --chmod=755 gradlew gradlew
 COPY gradle gradle
 COPY build.gradle settings.gradle gradle.properties ./
-
+RUN sed -i 's/\r$//' gradlew
 RUN ./gradlew --no-daemon dependencies
 
 COPY src src

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import br.com.scriptum.configuracao.IntegrationTest;
 import java.util.List;
-
+import io.quarkus.narayana.jta.QuarkusTransaction;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -89,12 +89,11 @@ public class DocumentoIntegracaoTest {
     }
 
     @Test
-    @Transactional
     public void testReceberRetornoDoOcrAtualizaDocumento() throws InterruptedException {
         Documento doc = new Documento();
         doc.titulo = "Aguardando OCR";
         doc.status = "EM_ESCANEAMENTO";
-        doc.persist();
+        QuarkusTransaction.requiringNew().run(() -> doc.persist());
 
         InMemorySource<JsonObject> source = connector.source("ocr-reading-return");
         
@@ -105,11 +104,67 @@ public class DocumentoIntegracaoTest {
 
         source.send(payload);
 
-        Thread.sleep(200); 
+        Thread.sleep(500); 
 
         Documento docAtualizado = Documento.findById(doc.id);
         assertEquals("ESCANEADO", docAtualizado.status);
         assertEquals(98.5, docAtualizado.confiabilidade);
         assertEquals(2, docAtualizado.conteudo.size());
+    }
+
+    @Test
+    public void testEditarDocumentoComSucesso() {
+
+        Documento doc = new Documento();
+        doc.titulo = "Documento Original";
+        doc.status = "DIGITADO_MANUALMENTE";
+        QuarkusTransaction.requiringNew().run(() -> doc.persist());
+
+        List<String> novosParagrafos = List.of("Texto atualizado na edição.");
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(novosParagrafos)
+        .when()
+            .put("/documentos/" + doc.id)
+        .then()
+            .statusCode(200) 
+            .body("conteudo[0]", is("Texto atualizado na edição."))
+            .body("status", is("DIGITADO_MANUALMENTE"));
+    }
+
+    @Test
+    public void testEditarDocumentoInexistenteRetorna404() {
+        List<String> novosParagrafos = List.of("Não importa");
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(novosParagrafos)
+        .when()
+            .put("/documentos/9999999") 
+        .then()
+            .statusCode(404); 
+    }
+
+    @Test
+    public void testReceberRetornoOcrComTextoGiganteSalvaComErro() throws InterruptedException {
+        Documento doc = new Documento();
+        doc.titulo = "Aguardando OCR Gigante";
+        doc.status = "EM_ESCANEAMENTO";
+        QuarkusTransaction.requiringNew().run(() -> doc.persist());
+
+        InMemorySource<JsonObject> source = connector.source("ocr-reading-return");
+        
+        String textoGigante = "*".repeat(2_100_000);
+        JsonObject payload = new JsonObject()
+                .put("documentId", doc.id)
+                .put("paragraphs", List.of(textoGigante))
+                .put("confidence", 50.0);
+
+        source.send(payload);
+        Thread.sleep(500);
+
+        Documento docAtualizado = Documento.findById(doc.id);
+        assertEquals("ERRO_LIMITE_TAMANHO", docAtualizado.status);
     }
 }

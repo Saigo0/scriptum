@@ -1,0 +1,8 @@
+br\com\scriptum\configuracao\TestExtensaoLogExecucao.class
+br\com\scriptum\DocumentoIntegracaoTest.class
+br\com\scriptum\service\DocumentoServiceTest.class
+br\com\scriptum\ServicoDiretoTest.class
+br\com\scriptum\configuracao\UnitTest.class
+br\com\scriptum\CoberturaExtraTest.class
+br\com\scriptum\configuracao\IntegrationTest.class
+br\com\scriptum\resource\GrupoResourceTest.class

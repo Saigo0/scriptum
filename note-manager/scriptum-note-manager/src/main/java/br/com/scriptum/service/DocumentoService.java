@@ -48,7 +48,7 @@ public class DocumentoService {
         Documento doc = new Documento();
         doc.titulo = titulo;
         doc.status = "EM_ESCANEAMENTO";
-        doc.persist();
+        doc.persistAndFlush();
         
         OcrRequest ocrRequest = new OcrRequest(doc.id, language, imageBase64);
         ocrEmitter.send(ocrRequest);
