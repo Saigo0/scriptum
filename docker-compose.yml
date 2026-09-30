@@ -135,6 +135,14 @@ services:
       postgres:
         condition: service_healthy      
 
+  auth:
+    build:
+      context: ./scriptum-auth/scriptum-auth
+    container_name: scriptum-auth
+    expose:
+      - "8082"
+    
+
 volumes:
   postgres-data:
   rabbitmq-data:

@@ -1,5 +1,14 @@
 _format_version: "3.0"
 services:
+  - name: scriptum-auth
+    url: http://auth:8082
+    routes:
+      - name: auth-route
+        paths:
+          - /auth
+        strip_path: false
+
+
   - name: scriptum-ocr
     url: http://ocr:8080
     routes:
@@ -8,7 +17,7 @@ services:
           - /ocr
         strip_path: false
     plugins:
-      - name: key-auth
+      - name: jwt 
 
   - name: scriptum-note-manager
     url: http://note-manager:8081
@@ -22,11 +31,11 @@ services:
           - /grupos
         strip_path: false
     plugins:
-      - name: key-auth
+      - name: jwt 
 
 consumers:
   - username: scriptum-client
-    keyauth_credentials:
-      - key: scriptum-dev-key
-
-#IMPLEMENTAR AUTENTICAÇÃO DO KONG
+    jwt_secrets:
+      - key: scriptum-issuer
+        secret: minha-chave-secreta-super-segura-123
+        algorithm: HS256

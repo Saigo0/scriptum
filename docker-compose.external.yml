@@ -134,6 +134,14 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+  
+  auth:
+    build:
+      context: ./scriptum-auth/scriptum-auth
+    container_name: scriptum-auth
+    ports:
+      - "8082:8082"
+    
 
 volumes:
   postgres-data:
