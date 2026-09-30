@@ -17,10 +17,11 @@ public class OcrResponseConsumer {
     DocumentoService documentoService;
 
     @Incoming("ocr-reading-return")
-    public void processOcrResult(JsonObject payload) {
+    public void processOcrResult(String payload) { 
         LOG.info("Recebendo resultado do OCR via RabbitMQ");
         try {
-            OcrResponse response = payload.mapTo(OcrResponse.class);
+            JsonObject json = new JsonObject(payload);
+            OcrResponse response = json.mapTo(OcrResponse.class);
             
             documentoService.processarRetornoOcr(
                 response.documentId, 

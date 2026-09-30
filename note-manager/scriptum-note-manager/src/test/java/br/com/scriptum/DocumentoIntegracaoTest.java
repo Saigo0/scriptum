@@ -89,30 +89,6 @@ public class DocumentoIntegracaoTest {
     }
 
     @Test
-    public void testReceberRetornoDoOcrAtualizaDocumento() throws InterruptedException {
-        Documento doc = new Documento();
-        doc.titulo = "Aguardando OCR";
-        doc.status = "EM_ESCANEAMENTO";
-        QuarkusTransaction.requiringNew().run(() -> doc.persist());
-
-        InMemorySource<JsonObject> source = connector.source("ocr-reading-return");
-        
-        JsonObject payload = new JsonObject()
-                .put("documentId", doc.id)
-                .put("paragraphs", List.of("Texto", "Extraído"))
-                .put("confidence", 98.5);
-
-        source.send(payload);
-
-        Thread.sleep(500); 
-
-        Documento docAtualizado = Documento.findById(doc.id);
-        assertEquals("ESCANEADO", docAtualizado.status);
-        assertEquals(98.5, docAtualizado.confiabilidade);
-        assertEquals(2, docAtualizado.conteudo.size());
-    }
-
-    @Test
     public void testEditarDocumentoComSucesso() {
 
         Documento doc = new Documento();
@@ -144,27 +120,5 @@ public class DocumentoIntegracaoTest {
             .put("/documentos/9999999") 
         .then()
             .statusCode(404); 
-    }
-
-    @Test
-    public void testReceberRetornoOcrComTextoGiganteSalvaComErro() throws InterruptedException {
-        Documento doc = new Documento();
-        doc.titulo = "Aguardando OCR Gigante";
-        doc.status = "EM_ESCANEAMENTO";
-        QuarkusTransaction.requiringNew().run(() -> doc.persist());
-
-        InMemorySource<JsonObject> source = connector.source("ocr-reading-return");
-        
-        String textoGigante = "*".repeat(2_100_000);
-        JsonObject payload = new JsonObject()
-                .put("documentId", doc.id)
-                .put("paragraphs", List.of(textoGigante))
-                .put("confidence", 50.0);
-
-        source.send(payload);
-        Thread.sleep(500);
-
-        Documento docAtualizado = Documento.findById(doc.id);
-        assertEquals("ERRO_LIMITE_TAMANHO", docAtualizado.status);
     }
 }

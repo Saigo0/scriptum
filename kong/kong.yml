@@ -28,3 +28,5 @@ consumers:
   - username: scriptum-client
     keyauth_credentials:
       - key: scriptum-dev-key
+
+#IMPLEMENTAR AUTENTICAÇÃO DO KONG

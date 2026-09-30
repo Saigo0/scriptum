@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DocumentoResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServicoDiretoTest (QuarkusTest)</a> &gt; <a href="index.source.html" class="el_package">br.com.scriptum.resource</a> &gt; <span class="el_source">DocumentoResource.java</span></div><h1>DocumentoResource.java</h1><pre class="source lang-java linenums">package br.com.scriptum.resource;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DocumentoResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GrupoResourceTest (QuarkusTest)</a> &gt; <a href="index.source.html" class="el_package">br.com.scriptum.resource</a> &gt; <span class="el_source">DocumentoResource.java</span></div><h1>DocumentoResource.java</h1><pre class="source lang-java linenums">package br.com.scriptum.resource;
 
 import br.com.scriptum.model.Documento;
 import br.com.scriptum.service.DocumentoService;
@@ -27,35 +27,49 @@ import java.util.List;
         public String imageBase64;
     }
 
+    @GET
+    @Path(&quot;/{id}&quot;)
+    public Response buscarDocumento(@PathParam(&quot;id&quot;) Long id) {
+<span class="nc" id="L33">        Documento doc = documentoService.buscarPorId(id);</span>
+        
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (doc == null) {</span>
+<span class="nc" id="L36">            return Response.status(Response.Status.NOT_FOUND)</span>
+<span class="nc" id="L37">                           .entity(&quot;Documento não encontrado para o ID: &quot; + id)</span>
+<span class="nc" id="L38">                           .build();</span>
+        }
+        
+<span class="nc" id="L41">        return Response.ok(doc).build();</span>
+    }
+
     @POST
     @Path(&quot;/manual&quot;)
     public Response criarManual(DocumentoManualRequest request) {
         try {
-<span class="nc" id="L34">            Documento doc = documentoService.criarDocumentoManual(request.titulo, request.paragrafos);</span>
-<span class="nc" id="L35">            return Response.status(Response.Status.CREATED).entity(doc).build();</span>
-<span class="nc" id="L36">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L37">            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();</span>
+<span class="nc" id="L48">            Documento doc = documentoService.criarDocumentoManual(request.titulo, request.paragrafos);</span>
+<span class="nc" id="L49">            return Response.status(Response.Status.CREATED).entity(doc).build();</span>
+<span class="nc" id="L50">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L51">            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();</span>
         }
     }
 
     @POST
     @Path(&quot;/escaneado&quot;)
     public Response criarEscaneado(DocumentoEscaneadoRequest request) {
-<span class="nc" id="L44">        Documento doc = documentoService.criarDocumentoEscaneado(request.titulo, request.language, request.imageBase64);</span>
-<span class="nc" id="L45">        return Response.status(Response.Status.ACCEPTED).entity(doc).build(); </span>
+<span class="nc" id="L58">        Documento doc = documentoService.criarDocumentoEscaneado(request.titulo, request.language, request.imageBase64);</span>
+<span class="nc" id="L59">        return Response.status(Response.Status.ACCEPTED).entity(doc).build(); </span>
     }
 
     @PUT
     @Path(&quot;/{id}&quot;)
     public Response editarDocumento(@PathParam(&quot;id&quot;) Long id, List&lt;String&gt; novosParagrafos) {
         try {
-<span class="nc" id="L52">            Documento doc = documentoService.editarDocumento(id, novosParagrafos);</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (doc == null) {</span>
-<span class="nc" id="L54">                return Response.status(Response.Status.NOT_FOUND).build();</span>
+<span class="nc" id="L66">            Documento doc = documentoService.editarDocumento(id, novosParagrafos);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            if (doc == null) {</span>
+<span class="nc" id="L68">                return Response.status(Response.Status.NOT_FOUND).build();</span>
             }
-<span class="nc" id="L56">            return Response.ok(doc).build();</span>
-<span class="nc" id="L57">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L58">            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();</span>
+<span class="nc" id="L70">            return Response.ok(doc).build();</span>
+<span class="nc" id="L71">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L72">            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();</span>
         }
     }
 }

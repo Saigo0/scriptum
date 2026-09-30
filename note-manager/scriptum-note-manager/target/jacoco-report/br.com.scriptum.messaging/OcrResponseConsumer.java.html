@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OcrResponseConsumer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServicoDiretoTest (QuarkusTest)</a> &gt; <a href="index.source.html" class="el_package">br.com.scriptum.messaging</a> &gt; <span class="el_source">OcrResponseConsumer.java</span></div><h1>OcrResponseConsumer.java</h1><pre class="source lang-java linenums">package br.com.scriptum.messaging;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OcrResponseConsumer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GrupoResourceTest (QuarkusTest)</a> &gt; <a href="index.source.html" class="el_package">br.com.scriptum.messaging</a> &gt; <span class="el_source">OcrResponseConsumer.java</span></div><h1>OcrResponseConsumer.java</h1><pre class="source lang-java linenums">package br.com.scriptum.messaging;
 
 import br.com.scriptum.dto.OcrResponse;
 import br.com.scriptum.service.DocumentoService;
@@ -17,21 +17,22 @@ import org.jboss.logging.Logger;
     DocumentoService documentoService;
 
     @Incoming(&quot;ocr-reading-return&quot;)
-    public void processOcrResult(JsonObject payload) {
+    public void processOcrResult(String payload) { 
 <span class="nc" id="L21">        LOG.info(&quot;Recebendo resultado do OCR via RabbitMQ&quot;);</span>
         try {
-<span class="nc" id="L23">            OcrResponse response = payload.mapTo(OcrResponse.class);</span>
+<span class="nc" id="L23">            JsonObject json = new JsonObject(payload);</span>
+<span class="nc" id="L24">            OcrResponse response = json.mapTo(OcrResponse.class);</span>
             
-<span class="nc" id="L25">            documentoService.processarRetornoOcr(</span>
-<span class="nc" id="L26">                response.documentId, </span>
-<span class="nc" id="L27">                response.paragraphs, </span>
-<span class="nc" id="L28">                response.confidence</span>
+<span class="nc" id="L26">            documentoService.processarRetornoOcr(</span>
+<span class="nc" id="L27">                response.documentId, </span>
+<span class="nc" id="L28">                response.paragraphs, </span>
+<span class="nc" id="L29">                response.confidence</span>
             );
             
-<span class="nc" id="L31">            LOG.infof(&quot;Documento %d atualizado com sucesso pelo OCR.&quot;, response.documentId);</span>
-<span class="nc" id="L32">        } catch (Exception e) {</span>
-<span class="nc" id="L33">            LOG.error(&quot;Falha ao processar o retorno do OCR&quot;, e);</span>
+<span class="nc" id="L32">            LOG.infof(&quot;Documento %d atualizado com sucesso pelo OCR.&quot;, response.documentId);</span>
+<span class="nc" id="L33">        } catch (Exception e) {</span>
+<span class="nc" id="L34">            LOG.error(&quot;Falha ao processar o retorno do OCR&quot;, e);</span>
         }
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L36">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
