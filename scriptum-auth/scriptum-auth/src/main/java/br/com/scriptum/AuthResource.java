@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
-    private static final String SECRET = "chave-secreta";
+    private static final String SECRET = "scriptum-chave-secreta-super-segura-32-bytes";
 
     public static class LoginRequest {
         public String usuario;

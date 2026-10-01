@@ -37,5 +37,5 @@ consumers:
   - username: scriptum-client
     jwt_secrets:
       - key: scriptum-issuer
-        secret: minha-chave-secreta-super-segura-123
+        secret: scriptum-chave-secreta-super-segura-32-bytes
         algorithm: HS256
